@@ -18,6 +18,19 @@ variable "example_app_name" {
 }
 
 resource "heroku_app" "example" {
-  name   = var.example_app_name
+  name = var.example_app_name
   region = "eu"
+  stack = "container"
+}
+
+
+
+# Build code & release to the app
+resource "heroku_build" "example" {
+  app = heroku_app.example.name
+
+  source {
+    url = "https://github.com/PerfectFit-project/perfect-fit-heroku-test/archive/refs/tags/v0.1.tar.gz"
+    version = "0.1"
+  }
 }
