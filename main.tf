@@ -30,7 +30,16 @@ resource "heroku_build" "example" {
   app = heroku_app.example.name
 
   source {
-    url = "https://github.com/PerfectFit-project/perfect-fit-heroku-test/archive/refs/tags/v0.1.tar.gz"
-    version = "0.1"
+    url = "https://github.com/PerfectFit-project/perfect-fit-heroku-test/archive/refs/tags/v0.2.tar.gz"
+    version = "0.2"
   }
+}
+
+# Launch the app's web process by scaling-up
+resource "heroku_formation" "example" {
+  app        = heroku_app.example.name
+  type       = "web"
+  quantity   = 1
+  size       = "free"
+  depends_on = [heroku_build.example]
 }
